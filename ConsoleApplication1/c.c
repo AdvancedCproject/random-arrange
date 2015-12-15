@@ -289,9 +289,18 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 			{
 				if (arr[y][x] == 1 && arr[y][x - 1] == 0 && arr[y][x + 1] == 1)
 				{
-					if ((x == 0) && (y == 9))
+					if (x == 0 && y == 9)
 					{
 						arr[y + 1][x] = 5;
+					}
+					else if (x == 0 && y != 0 && y != 9)
+					{
+						arr[y - 1][x] = 5;							//
+						arr[y + 1][x] = 5;							//
+					}
+					else if (y == 0 && x == 0)
+					{
+						arr[y + 1][x] = 5;							//
 					}
 					else if (y == 9 && x != 0)
 					{
@@ -299,10 +308,7 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 						arr[y][x - 1] = 5;							//	
 						arr[y - 1][x] = 5;
 					}
-					else if (y == 0 && x == 0)
-					{
-						arr[y + 1][x] = 5;							//
-					}
+
 					else if (y == 0 && x != 0)
 					{
 						arr[y][x - 1] = 5;							//	
@@ -339,11 +345,10 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 					{
 						arr[y - 1][x] = 5;							//
 					}
-					else if (y == 9 && x != 9)
+					else if (x == 9 && y != 0 && y != 9)
 					{
-						arr[y - 1][x + 1] = 5;						//
-						arr[y][x + 1] = 5;							//
 						arr[y - 1][x] = 5;							//
+						arr[y + 1][x] = 5;							//
 					}
 					else if (y == 0 && x == 9)
 					{
@@ -354,6 +359,12 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 						arr[y][x + 1] = 5;							//
 						arr[y + 1][x + 1] = 5;						// 맨 오른쪽 끝 외곽 처리
 						arr[y + 1][x] = 5;							//
+					}
+					else if (y == 9 && x != 9)
+					{
+						arr[y - 1][x] = 5;							//
+						arr[y - 1][x + 1] = 5;						// 맨 오른쪽 끝 외곽 처리
+						arr[y][x + 1] = 5;							//
 					}
 					else {
 						arr[y - 1][x + 1] = 5;						//
