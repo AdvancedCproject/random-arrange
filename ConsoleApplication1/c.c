@@ -4,6 +4,8 @@
 
 
 #include <stdio.h>
+#include <conio.h>
+#include <Windows.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -14,6 +16,14 @@ void two_ship(int *arr[][10], int randx, int randy, int ori);
 void one_ship(int *arr[][10], int randx, int randy, int ori);
 void mapprint(int *arr[][10]);
 void inactive_block(int *arr[][10], int x, int y, int ori, int size);
+
+void gotoxy(int x, int y)
+{
+
+	COORD CursorPosition = { x,y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), CursorPosition);
+
+}
 
 
 int main()
@@ -39,12 +49,12 @@ int main()
 	{
 		ori = rand() % 2 + 1;
 		if (ori == 1) {
-			randx = rand() % 10;
-			randy = rand() % (10 - yValue);
+			randy = rand() % 10;
+			randx = rand() % (10 - yValue);
 		}
 		else if (ori == 2) {
-			randx = rand() % (10 - yValue);
-			randy = rand() % 10;
+			randy = rand() % (10 - yValue);
+			randx = rand() % 10;
 		}
 
 		// position check
@@ -57,13 +67,14 @@ int main()
 
 			inactive_block(arr, randx, randy, ori, 4);
 
+
 			yValue--;
 		} 
 		else if (yValue ==3) {
 			if (count < 2) {
 				//3沫 硅 硅摹
 				ship(arr, randx, randy, ori, 3);
-
+			
 				inactive_block(arr, randx, randy, ori, 3);
 
 				count++;
@@ -129,14 +140,14 @@ void ship(int *arr[][10], int randx, int randy, int ori, int size)
 	{
 		for (k = 0;k < size;k++)
 		{
-			arr[randx][randy + k] = 1;
+			arr[randy][randx + k] = 1;
 		}
 	}
 	else if (ori == 2)
 	{
 		for (k = 0;k < size;k++)
 		{
-			arr[randx + k][randy] = 1;
+			arr[randy + k][randx] = 1;
 		}
 	}
 }
@@ -149,14 +160,14 @@ void four_ship(int *arr[][10], int randx, int randy, int ori)
 	{
 		for (k = 0;k < 4;k++)
 		{
-			arr[randx][randy + k] = 1;
+			arr[randy][randx + k] = 1;
 		}
 	}
 	else if (ori == 2)
 	{
 		for (k = 0;k < 4;k++)
 		{
-			arr[randx + k][randy] = 1;
+			arr[randy + k][randx] = 1;
 		}
 	}
 }
@@ -171,14 +182,14 @@ void three_ship(int *arr[][10], int randx, int randy, int ori)
 	{
 		for (k = 0;k < 3;k++)
 		{
-			arr[randx][randy + k] = 1;
+			arr[randy][randx + k] = 1;
 		}
 	}
 	else if (ori == 2)
 	{
 		for (k = 0;k < 3;k++)
 		{
-			arr[randx + k][randy] = 1;
+			arr[randy + k][randx] = 1;
 		}
 	}
 }
@@ -193,14 +204,14 @@ void two_ship(int *arr[][10], int randx, int randy, int ori)
 	{
 		for (k = 0;k < 2;k++)
 		{
-			arr[randx][randy + k] = 1;
+			arr[randy][randx + k] = 1;
 		}
 	}
 	else if (ori == 2)
 	{
 		for (k = 0;k < 2;k++)
 		{
-			arr[randx + k][randy] = 1;
+			arr[randy + k][randx] = 1;
 		}
 	}
 }
@@ -215,14 +226,14 @@ void one_ship(int *arr[][10], int randx, int randy, int ori)
 	{
 		for (k = 0;k < 1;k++)
 		{
-			arr[randx][randy + k] = 1;
+			arr[randy][randx + k] = 1;
 		}
 	}
 	else if (ori == 2)
 	{
 		for (k = 0;k < 1;k++)
 		{
-			arr[randx][randy + k] = 1;
+			arr[randy][randx + k] = 1;
 		}
 	}
 }
@@ -236,7 +247,7 @@ int check_arrange(int *arr[][10], int randx, int randy, int ori, int length)
 		{
 			for (k = 0;k < length;k++)
 			{
-				if (arr[randx][randy + k] != 0)
+				if (arr[randy][randx + k] != 0)
 					return 0;
 			}
 		}
@@ -244,7 +255,7 @@ int check_arrange(int *arr[][10], int randx, int randy, int ori, int length)
 		{
 			for (k = 0;k < length;k++)
 			{
-				if (arr[randx + k][randy] != 0)
+				if (arr[randy + k][randx] != 0)
 					return 0;
 			}
 		}
@@ -255,7 +266,7 @@ int check_arrange(int *arr[][10], int randx, int randy, int ori, int length)
 }
 
 int positionCheck(int *arr[][10], int x, int y) {
-	if (arr[x][y] != 0)
+	if (arr[y][x] != 0)
 	{
 		return 0;
 	}
@@ -282,7 +293,7 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 					{
 						arr[y + 1][x] = 5;
 					}
-					else if (y == 9)
+					else if (y == 9 && x != 0)
 					{
 						arr[y - 1][x - 1] = 5;						//
 						arr[y][x - 1] = 5;							//	
@@ -292,7 +303,7 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 					{
 						arr[y + 1][x] = 5;							//
 					}
-					else if (y == 0)
+					else if (y == 0 && x != 0)
 					{
 						arr[y][x - 1] = 5;							//	
 						arr[y + 1][x - 1] = 5;						//	盖 哭率 场 寇胞 贸府
@@ -328,7 +339,7 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 					{
 						arr[y - 1][x] = 5;							//
 					}
-					else if (y == 9)
+					else if (y == 9 && x != 9)
 					{
 						arr[y - 1][x + 1] = 5;						//
 						arr[y][x + 1] = 5;							//
@@ -338,7 +349,7 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 					{
 						arr[y + 1][x] = 5;							//
 					}
-					else if (y == 0)
+					else if (y == 0 && x != 9)
 					{
 						arr[y][x + 1] = 5;							//
 						arr[y + 1][x + 1] = 5;						// 盖 坷弗率 场 寇胞 贸府
@@ -407,7 +418,12 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 					{
 						arr[y][x - 1] = 5;							//
 					}
-					if (x == 9)
+					if (y == 0 && x != 9 && x != 0)
+					{
+						arr[y][x - 1] = 5;							//
+						arr[y][x + 1] = 5;							//
+					}
+					if (x == 9 && y != 0)
 					{
 						arr[y - 1][x - 1] = 5;						//
 						arr[y - 1][x] = 5;							//
@@ -417,7 +433,7 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 					{
 						arr[y][x + 1] = 5;							//
 					}
-					else if (x == 0)
+					else if (x == 0 && y != 0)
 					{
 						arr[y - 1][x] = 5;							//	
 						arr[y - 1][x + 1] = 5;						//	盖 拉率 场 寇胞 贸府
@@ -454,7 +470,12 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 					{
 						arr[y][x - 1] = 5;							//
 					}
-					else if (x == 9)
+					else if (y == 9 && x != 0 && x != 9)
+					{
+						arr[y][x - 1] = 5;							//
+						arr[y][x + 1] = 5;							//
+					}
+					else if (x == 9 && y != 9)
 					{
 						arr[y + 1][x - 1] = 5;						//
 						arr[y + 1][x] = 5;							//
@@ -464,7 +485,7 @@ void inactive_block(int *arr[][10], int x, int y, int ori, int size)
 					{
 						arr[y][x + 1] = 5;							//
 					}
-					else if (x == 0)
+					else if (x == 0 && y != 9)
 					{
 						arr[y + 1][x] = 5;							//
 						arr[y + 1][x + 1] = 5;						// 盖 酒阀率 场 寇胞 贸府
